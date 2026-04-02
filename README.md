@@ -30,41 +30,54 @@ When multiple users move the same card or change positions simultaneously:
 - **Development**: A special `mock-token` is supported for rapid frontend development (bypasses JWT validation and uses the first available user).
 
 ## 🛠 Tech Stack
-- **Backend**: Python 3.11, FastAPI, SQLModel (SQLAlchemy), Alembic, Pydantic V2.
-- **Package Manager**: `uv` (Fast, reliable Python package management).
-- **Database**: PostgreSQL 16.
-- **Infrastructure**: Docker & Docker Compose.
+- **Frontend**: React 19, TypeScript, Vite, Tailwind CSS, dnd-kit
+- **Backend**: Python 3.11, FastAPI, SQLModel (SQLAlchemy)
+- **Database**: PostgreSQL 16
+- **Package Management**: `uv` (Fastest Python package manager)
+- **Migration Engine**: Alembic
+- **Infrastructure**: Docker & Docker Compose
 
-##  API Endpoints
+---
 
-### Authentication
-- `POST /api/v1/auth/register` - Create a new user.
-- `POST /api/v1/auth/login` - Obtain a JWT access token.
+## 🚦 Getting Started
 
-### Boards
-- `GET /api/v1/boards` - List all boards for the current user.
-- `POST /api/v1/boards` - Create a new board.
-- `GET /api/v1/boards/{id}` - Get a detailed board view (includes lists and cards).
-- `DELETE /api/v1/boards/{id}` - Soft-delete a board and its contents.
+### Prerequisites
+Ensure you have the following installed:
+- [Docker](https://docs.docker.com/get-docker/)
+- [Docker Compose](https://docs.docker.com/compose/install/)
 
-### Lists
-- `POST /api/v1/boards/{id}/lists` - Create a new list in a specific board.
-- `DELETE /api/v1/lists/{id}` - Soft-delete a list (cascades to cards).
+### Installation & Startup
+Follow these steps to get the project running locally:
 
-### Cards
-- `POST /api/v1/cards` - Create a new card in a list.
-- `PATCH /api/v1/cards/{id}` - Update card title or description.
-- `DELETE /api/v1/cards/{id}` - Soft-delete a card.
-- `PATCH /api/v1/cards/{id}/move` - Move a card between lists or reorder it.
+**1. Clone the repository and navigate to the project root.**
 
-## Running the Project
+**2. Start the services with Docker Compose:**
 ```bash
-docker compose up --build
+docker compose up --build -d
 ```
-The API will be available at `http://localhost:8000`.
-Swagger Documentation: `http://localhost:8000/docs`
+
+**3. Run Database Migrations:**
+Once the containers are up and the database is ready, apply the migrations:
+```bash
+docker compose exec backend uv run alembic upgrade head
+```
+> [!NOTE]
+> Database migrations are **idempotent**. This means they can be safely run multiple times without causing errors, even if some tables or indexes already exist.
+---
+
+## 📖 Application & API Access
+
+Once the containers are running:
+- **Web Application (Frontend)**: [http://localhost:5173](http://localhost:5173)
+- **Backend API**: [http://localhost:8000](http://localhost:8000)
+
+You can explore and test the backend endpoints directly using the standard FastAPI interfaces:
+- **Swagger UI**: [http://localhost:8000/docs](http://localhost:8000/docs)
+- **ReDoc**: [http://localhost:8000/redoc](http://localhost:8000/redoc)
+
+---
 
 ##  Project Structure
-- `/backend`: FastAPI application, models, services, and migrations.
-- `/frontend`: React application
-- `docker-compose.yml`: Full stack orchestration.
+- `/frontend`: React frontend application built with Vite, TypeScript, and Tailwind CSS.
+- `/backend`: Core API implementation, SQL models, business services, and database migrations.
+- `docker-compose.yml`: Full-stack orchestration for local development and staging.
