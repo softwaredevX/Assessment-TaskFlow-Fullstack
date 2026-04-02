@@ -28,12 +28,13 @@ def upgrade() -> None:
         sa.Column('list_id', sa.Uuid(), nullable=False),
         sa.Column('version', sa.Integer(), server_default=sa.text('1'), nullable=False),
         sa.ForeignKeyConstraint(['list_id'], ['lists.id'], ),
-        sa.PrimaryKeyConstraint('id')
+        sa.PrimaryKeyConstraint('id'),
+        if_not_exists=True
     )
-    op.create_index(op.f('ix_cards_id'), 'cards', ['id'], unique=False)
-    op.create_index(op.f('ix_cards_rank'), 'cards', ['rank'], unique=False)
+    op.create_index(op.f('ix_cards_id'), 'cards', ['id'], unique=False,if_not_exists=True)
+    op.create_index(op.f('ix_cards_rank'), 'cards', ['rank'], unique=False,if_not_exists=True)
 
 def downgrade() -> None:
-    op.drop_index(op.f('ix_cards_rank'), table_name='cards')
-    op.drop_index(op.f('ix_cards_id'), table_name='cards')
-    op.drop_table('cards')
+    op.drop_index(op.f('ix_cards_rank'), table_name='cards',if_exists=True)
+    op.drop_index(op.f('ix_cards_id'), table_name='cards',if_exists=True)
+    op.drop_table('cards',if_exists=True)

@@ -26,10 +26,11 @@ def upgrade() -> None:
         sa.Column('description', sqlmodel.sql.sqltypes.AutoString(length=1000), nullable=True),
         sa.Column('owner_id', sa.Uuid(), nullable=False),
         sa.ForeignKeyConstraint(['owner_id'], ['users.id'], ),
-        sa.PrimaryKeyConstraint('id')
+        sa.PrimaryKeyConstraint('id'),
+        if_not_exists=True
     )
-    op.create_index(op.f('ix_boards_id'), 'boards', ['id'], unique=False)
+    op.create_index(op.f('ix_boards_id'), 'boards', ['id'], unique=False,if_not_exists=True)
 
 def downgrade() -> None:
-    op.drop_index(op.f('ix_boards_id'), table_name='boards')
-    op.drop_table('boards')
+    op.drop_index(op.f('ix_boards_id'), table_name='boards',if_exists=True)
+    op.drop_table('boards',if_exists=True)

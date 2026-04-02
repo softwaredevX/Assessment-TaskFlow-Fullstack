@@ -26,10 +26,11 @@ def upgrade() -> None:
         sa.Column('position', sa.Float(), nullable=False),
         sa.Column('board_id', sa.Uuid(), nullable=False),
         sa.ForeignKeyConstraint(['board_id'], ['boards.id'], ),
-        sa.PrimaryKeyConstraint('id')
+        sa.PrimaryKeyConstraint('id'),
+        if_not_exists=True
     )
-    op.create_index(op.f('ix_lists_id'), 'lists', ['id'], unique=False)
+    op.create_index(op.f('ix_lists_id'), 'lists', ['id'], unique=False,if_not_exists=True)
 
 def downgrade() -> None:
-    op.drop_index(op.f('ix_lists_id'), table_name='lists')
-    op.drop_table('lists')
+    op.drop_index(op.f('ix_lists_id'), table_name='lists',if_exists=True)
+    op.drop_table('lists',if_exists=True)

@@ -24,12 +24,13 @@ def upgrade() -> None:
         sa.Column('deleted_at', sa.DateTime(timezone=True), nullable=True),
         sa.Column('email', sqlmodel.sql.sqltypes.AutoString(length=255), nullable=False),
         sa.Column('hashed_password', sqlmodel.sql.sqltypes.AutoString(length=255), nullable=False),
-        sa.PrimaryKeyConstraint('id')
+        sa.PrimaryKeyConstraint('id'),
+        if_not_exists=True
     )
-    op.create_index(op.f('ix_users_email'), 'users', ['email'], unique=True)
-    op.create_index(op.f('ix_users_id'), 'users', ['id'], unique=False)
+    op.create_index(op.f('ix_users_email'), 'users', ['email'], unique=True,if_not_exists=True)
+    op.create_index(op.f('ix_users_id'), 'users', ['id'], unique=False,if_not_exists=True)
 
 def downgrade() -> None:
-    op.drop_index(op.f('ix_users_id'), table_name='users')
-    op.drop_index(op.f('ix_users_email'), table_name='users')
-    op.drop_table('users')
+    op.drop_index(op.f('ix_users_id'), table_name='users',if_exists=True)
+    op.drop_index(op.f('ix_users_email'), table_name='users',if_exists=True)
+    op.drop_table('users',if_exists=True)
