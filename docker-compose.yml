@@ -1,4 +1,3 @@
-version: '3.8'
 
 services:
   db:
@@ -23,6 +22,21 @@ services:
       - ./backend/.env
     depends_on:
       - db
+    restart: always
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    ports:
+      - "5173:5173"
+    env_file:
+      - ./frontend/.env
+    depends_on:
+      - backend
     restart: always
 
 volumes:
