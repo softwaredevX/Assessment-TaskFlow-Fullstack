@@ -7,3 +7,8 @@ class UserResponse(SQLModel):
     email: EmailStr
 
     model_config = {"from_attributes": True}
+
+class UserRegisterResponse(SQLModel):
+    user: UserResponse
+    access_token: str
+    token_type: str = "bearer"
