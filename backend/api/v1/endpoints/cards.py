@@ -21,4 +21,4 @@ async def move_card(card_id: UUID, move_in: CardMove, db: DbSession, current_use
 
 @router.delete("/{card_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_card(card_id: UUID, db: DbSession, current_user: CurrentUser):
-    await CardService.delete_card(db, card_id)
+    return await CardService.delete_card(db, card_id)
