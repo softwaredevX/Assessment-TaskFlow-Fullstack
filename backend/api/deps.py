@@ -16,16 +16,20 @@ DbSession = Annotated[AsyncSession, Depends(get_db)]
 TokenDep = Annotated[str, Depends(oauth2_scheme)]
 
 async def get_current_user(db: DbSession, token: TokenDep) -> User:
-    if token == "mock-token":
-        logger.warning("Mock token used — fetching first active user")
-        result = await db.execute(select(User).where(User.deleted_at.is_(None)).limit(1))
-        user = result.scalar_one_or_none()
-        if user:
-            return user
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Mock token used but no users found in database",
-        )
+    
+    ##############################
+    ##### Mock Token Logic For Development
+    ##############################
+    # if token == "mock-token":
+    #     logger.warning("Mock token used — fetching first active user")
+    #     result = await db.execute(select(User).where(User.deleted_at.is_(None)).limit(1))
+    #     user = result.scalar_one_or_none()
+    #     if user:
+    #         return user
+    #     raise HTTPException(
+    #         status_code=status.HTTP_401_UNAUTHORIZED,
+    #         detail="Mock token used but no users found in database",
+    #     )
 
     try:
         payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
