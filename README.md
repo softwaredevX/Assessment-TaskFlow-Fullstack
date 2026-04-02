@@ -29,7 +29,7 @@ When multiple users move the same card or change positions simultaneously:
 - **Production**: Secure JWT-based authentication via Argon2 password hashing.
 - **Development**: A special `mock-token` is supported for rapid frontend development (bypasses JWT validation and uses the first available user).
 
-## 🛠 Tech Stack
+##  Tech Stack
 - **Frontend**: React 19, TypeScript, Vite, Tailwind CSS, dnd-kit
 - **Backend**: Python 3.11, FastAPI, SQLModel (SQLAlchemy)
 - **Database**: PostgreSQL 16
@@ -39,7 +39,7 @@ When multiple users move the same card or change positions simultaneously:
 
 ---
 
-## 🚦 Getting Started
+## Getting Started
 
 ### Prerequisites
 Ensure you have the following installed:
@@ -65,7 +65,7 @@ docker compose exec backend uv run alembic upgrade head
 > Database migrations are **idempotent**. This means they can be safely run multiple times without causing errors, even if some tables or indexes already exist.
 ---
 
-## 📖 Application & API Access
+##  Application & API Access
 
 Once the containers are running:
 - **Web Application (Frontend)**: [http://localhost:5173](http://localhost:5173)
